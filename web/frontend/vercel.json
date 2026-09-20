@@ -1,0 +1,63 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/", "destination": "/opac/home", "permanent": false },
+    {
+      "source": "/opac/books",
+      "destination": "/opac/collections",
+      "permanent": true
+    },
+    {
+      "source": "/opac/books/:id",
+      "destination": "/opac/collections/:id",
+      "permanent": true
+    },
+    {
+      "source": "/opac/contacts",
+      "destination": "/opac/about",
+      "permanent": true
+    },
+    {
+      "source": "/lms/updates/:path*",
+      "destination": "/lms/library-desk/announcements",
+      "permanent": true
+    },
+    {
+      "source": "/lms/chats",
+      "destination": "/lms/library-desk/conversations",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    { "source": "/opac/home", "destination": "/api/head" },
+    { "source": "/opac/about", "destination": "/api/head" },
+    { "source": "/opac/news_announcements", "destination": "/api/head" },
+    { "source": "/opac/collections", "destination": "/api/head" },
+    { "source": "/opac/collections/:id", "destination": "/api/head" },
+
+    { "source": "/opac/profile", "destination": "/index.html" },
+    { "source": "/opac/unauthorized", "destination": "/index.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/register", "destination": "/index.html" },
+    { "source": "/verify_email", "destination": "/index.html" },
+    { "source": "/password_reset", "destination": "/index.html" },
+    { "source": "/unauthorized", "destination": "/index.html" },
+    { "source": "/lms/:path*", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
+}

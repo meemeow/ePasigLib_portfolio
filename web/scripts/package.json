@@ -1,0 +1,37 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "upload-searchables.ts",
+  "scripts": {
+    "upload": "npx ts-node upload-searchables.ts",
+    "migrate:log-keys": "npx tsx rename-log-keys.ts",
+    "migrate:descriptions": "npx tsx rewrite-log-descriptions.ts",
+    "migrate:pkc-location": "npx tsx rename-pkc-location.ts",
+    "migrate:circulations": "npx tsx migrate-circulations.ts",
+    "migrate:suggestions": "npx tsx migrate-requested-collections.ts",
+    "policy:update": "npx tsx update-circulation-policy.ts",
+    "verify:dates": "npx tsx verify-circulation-dates.ts",
+    "count:circulation": "npx tsx count-circulation.ts",
+    "calendar:update": "npx tsx seed-library-calendar.ts",
+    "prune:transactions": "npx tsx prune-legacy-transactions.ts",
+    "prune:circulations": "npx tsx prune-legacy-circulations.ts",
+    "prune:rejected-renewals": "npx tsx prune-rejected-renewals.ts",
+    "rename:circ-ids": "npx tsx rename-circulation-ids.ts",
+    "trim:accessions": "npx tsx trim-accession-index.ts",
+    "search:rebuild": "npx tsx rebuild-search-index.ts",
+    "audit:circulation": "npx tsx audit-circulation.ts",
+    "backfill:borrows": "npx tsx backfill-borrow-counts.ts",
+    "trim:collections": "npx tsx trim-collection-text.ts",
+    "report:missing-copies": "npx tsx report-missing-copies.ts"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}

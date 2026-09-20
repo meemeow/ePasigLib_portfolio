@@ -1,0 +1,280 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@font-face {
+    font-family: "GothamBlack";
+    src: url("./fonts/Gotham-Black.otf") format("opentype");
+}
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./fonts/Gotham-Medium.otf") format("opentype");
+}
+@font-face {
+    font-family: "GothamLight";
+    src: url("./fonts/Gotham-Light.otf") format("opentype");
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * The stock scale restated, plus one breakpoint past the end of it for the
+ * widths where a layout drawn as three columns finally has the room to stand
+ * as three columns — the About screen is the first to need it.
+ *
+ * The five restated values are the stock ones to the pixel — 40rem is 640px at
+ * the 16px root this app never changes, and so on down the list. Restating them
+ * is what makes the sixth work. Tailwind orders the breakpoint media blocks by
+ * comparing the declared values, and these all carry the same weight in the
+ * cascade, so whichever it emits last wins where two of them overlap. A lone px
+ * breakpoint among rem ones does not compare: declared as `1881px` against the
+ * stock rems, `3xl` came out ahead of `sm`, which left it losing on source
+ * order to every named variant it exists to override.
+ *
+ * Declaring 1881 in rem instead is worse. 117.5625rem is exact in the source and
+ * the build minifier rounds it to 117.563rem — 1881.008px — so 1881 itself, the
+ * one width the design names, would fall outside its own band. One unit for the
+ * whole scale, and the comparison is honest.
+ *
+ * The same comparison now holds for arbitrary `min-[…]` variants, which used to
+ * be emitted ahead of every named breakpoint whatever their widths and now sort
+ * among them by width, as they read. Nothing in the app relied on the old order
+ * — every place the two kinds are mixed puts the smaller width on the arbitrary
+ * one — but see the note in `StatCardsRow`, which was written around it.
+ */
+@theme {
+    /*
+     * Not a stock Tailwind name. 441 is where the one-column layout stops being
+     * a phone held in one hand and starts being a small window — wide enough
+     * that a value drawn for 375px begins to look thin — and `sm` at 640 was
+     * the first chance to say so, which was 200px too late.
+     */
+    --breakpoint-xs: 441px;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+    --breakpoint-3xl: 1881px;
+}
+
+/*
+ * The script face on the About masthead, loaded from Google Fonts in
+ * index.html. The fallbacks are the two script faces that ship with Windows
+ * and macOS, so the heading still reads as handwriting if the request fails.
+ */
+@theme {
+    --font-script: "Allura", "Segoe Script", "Snell Roundhand", cursive;
+}
+
+/*
+ * The highlight that travels across a loading placeholder. Declared here rather
+ * than as an arbitrary animate-[...] utility at the call site, because Tailwind
+ * only emits the keyframes for animations it knows about through the theme.
+ */
+@theme {
+    --animate-skeleton-sweep: skeleton-sweep 1.6s ease-in-out infinite;
+
+    @keyframes skeleton-sweep {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(100%);
+        }
+    }
+}
+
+@theme inline {
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --radius: 0.625rem;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+.recaptcha-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    transform: scale(0.85);
+    transform-origin: center top;
+}
+
+@media (max-width: 640px) {
+    .recaptcha-container {
+        transform: scale(0.75);
+    }
+}
+
+@media (max-width: 480px) {
+    .recaptcha-container {
+        transform: scale(0.65);
+    }
+}
+
+@media screen {
+  .print-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    grid-auto-rows: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .barcode-label {
+    aspect-ratio: 3/4;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-input-decoration-container {
+  display: none !important;
+}
+
+/* CUSTOM SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+/* Visible horizontal scrollbar for chat chips */
+.chat-chips-scroll::-webkit-scrollbar {
+    height: 10px;
+}
+.chat-chips-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(99,102,241,0.18); /* subtle bluish */
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+.chat-chips-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99,102,241,0.18) transparent;
+}

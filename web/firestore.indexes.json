@@ -1,0 +1,870 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "chats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Participants",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "chats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Participants",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "UnreadPatron",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "chats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "IsGuest",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "LastPatronActivityAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "chats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "IsGuest",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "StartedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ClassCode",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CollectionTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MainAuthor",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "MaterialType",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "collections",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ModifiedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "TargetUID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "TargetUID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ProcessedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "UID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "UID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ProcessedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "notifications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isUpdate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "City",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Barangay",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "City",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Age",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "City",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "State",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "patrons",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reservationRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "PatronUID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reservationRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "BookIDs",
+          "arrayConfig": "CONTAINS"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reservationRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "ExpiresAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "staffs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "JobTitle",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "StaffCode",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "staffs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "StaffCode",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "updates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "updates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Type",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "CreatedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "loans",
+      "fieldPath": "DueDate",
+      "indexes": [
+        {
+          "queryScope": "COLLECTION",
+          "order": "ASCENDING"
+        },
+        {
+          "queryScope": "COLLECTION",
+          "order": "DESCENDING"
+        },
+        {
+          "queryScope": "COLLECTION_GROUP",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "holds",
+      "fieldPath": "ShelfExpiresOn",
+      "indexes": [
+        {
+          "queryScope": "COLLECTION",
+          "order": "ASCENDING"
+        },
+        {
+          "queryScope": "COLLECTION",
+          "order": "DESCENDING"
+        },
+        {
+          "queryScope": "COLLECTION_GROUP",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "holds",
+      "fieldPath": "PickupFrom",
+      "indexes": [
+        {
+          "queryScope": "COLLECTION",
+          "order": "ASCENDING"
+        },
+        {
+          "queryScope": "COLLECTION",
+          "order": "DESCENDING"
+        },
+        {
+          "queryScope": "COLLECTION_GROUP",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ]
+}

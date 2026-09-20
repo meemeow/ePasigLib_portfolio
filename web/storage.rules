@@ -1,0 +1,227 @@
+rules_version = '2';
+
+/*
+ * Cloud Storage access for ePasigLib.
+ *
+ * The bucket holds five things, and they do not all deserve the same answer.
+ * Book covers, announcement attachments and profile pictures are public
+ * catalogue content -- they are already served to logged-out visitors through
+ * tokenised download URLs stored in Firestore, so pretending they are secret
+ * would buy nothing and break the OPAC the first time a page asked for one by
+ * path. Government ID photographs are the opposite, and they are the reason
+ * this file needed writing at all.
+ *
+ * Writes are the tighter half throughout. Every upload path is pinned to a
+ * staff permission, a size and a content type, mirroring the checks the compose
+ * UI already makes -- a client-side check is a courtesy to the person
+ * uploading, not a control.
+ *
+ * Storage rules can read Firestore, which is what makes the permission checks
+ * below possible: there are no custom claims on this project, so a role is a
+ * field on staffs/{uid} and has to be fetched.
+ */
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ------------------------------------------------------------- identity
+
+    /*
+     * A real account, not a chat guest.
+     *
+     * Live chat signs visitors in anonymously so Firestore rules have a uid to
+     * pin a message to. That account is a key to one conversation and nothing
+     * else; it must not be able to put a file in the bucket.
+     */
+    function signedIn() {
+      return request.auth != null
+        && request.auth.token.firebase.sign_in_provider != 'anonymous';
+    }
+
+    function staffData() {
+      return firestore.get(
+        /databases/(default)/documents/staffs/$(request.auth.uid)).data;
+    }
+
+    function isActiveStaff() {
+      return signedIn()
+        && firestore.exists(
+             /databases/(default)/documents/staffs/$(request.auth.uid))
+        && staffData().get('Status', '') != 'Archived';
+    }
+
+    function staffCan(permission) {
+      return isActiveStaff() && staffData().get(permission, false) == true;
+    }
+
+    // ---------------------------------------------------------------- files
+
+    /** The types the compose UI accepts, enforced where it cannot be trusted. */
+    function isAllowedDocument() {
+      return request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType in [
+             'image/png',
+             'image/jpeg',
+             'image/webp',
+             'image/gif',
+             'application/pdf',
+             'application/msword',
+             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+             'application/vnd.ms-excel',
+             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+             'text/plain'
+           ];
+    }
+
+    function isImage(maxBytes) {
+      return request.resource.size <= maxBytes
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    /** The token half of a "<token>.webp" object name. */
+    function nameToken(file) {
+      return file.split('[.]')[0];
+    }
+
+    // ------------------------------------------------------ ID photographs
+
+    /*
+     * The staging area for a library ID, and the only path in this bucket a
+     * signed-out browser may write to.
+     *
+     * It has to be. Public registration uploads the photograph before the
+     * account exists -- there is nobody to authenticate -- and the file is
+     * later moved to `ids/` by the server once the email is verified.
+     *
+     * What stops that being an open drop box is the token. The object name is
+     * `<token>.webp`, where the token is the uuid4 that
+     * `requestPatronSelfRegistration` minted, and the rule requires a matching
+     * `email_verifications/{token}` document to exist. That document is written
+     * by the callable before the token is ever handed back, so the only person
+     * who can write here is somebody the server has already issued a
+     * registration to, and only at the one name it issued. An expired
+     * registration is swept, and the upload stops being possible with it.
+     *
+     * Nothing may read this path. The server moves the file; no client ever
+     * needs to see it, and a stranger's identity document is not something to
+     * leave fetchable by guessing.
+     */
+    match /ids_temp/{file} {
+      allow read: if false;
+
+      allow create, update: if isImage(5 * 1024 * 1024)
+        && file.matches('.*[.]webp')
+        && firestore.exists(/databases/(default)/documents/email_verifications/$(nameToken(file)));
+
+      allow delete: if false;
+    }
+
+    /*
+     * Verified library IDs.
+     *
+     * Written only by the server -- `uploadPatronID` takes the bytes through a
+     * callable, and the verification flow moves the staged file here -- so
+     * every client write is refused.
+     *
+     * Read by the desk, because the patron record page shows the ID it is
+     * checking, and by the patron whose ID it is. The object is named for the
+     * public UID (the P-number), not the auth uid, so a patron proves ownership
+     * by their own record: `patrons` is keyed by auth uid and carries the
+     * P-number as a field.
+     *
+     * Any active staff member may look, which is what the patron page already
+     * assumes -- the preview loads for whoever can open the record. Narrowing
+     * it to VerifyIDs would blank the image for a colleague on the circulation
+     * desk who is legitimately looking at the same page.
+     */
+    match /ids/{file} {
+      allow get: if isActiveStaff()
+        || (signedIn()
+            && firestore.exists(
+                 /databases/(default)/documents/patrons/$(request.auth.uid))
+            && firestore.get(
+                 /databases/(default)/documents/patrons/$(request.auth.uid))
+                 .data.get('UID', '') == nameToken(file));
+
+      allow list: if false;
+      allow write: if false;
+    }
+
+    // ----------------------------------------------------- public catalogue
+
+    /*
+     * Book covers.
+     *
+     * Public to read, and honestly so: the OPAC is a public catalogue, the
+     * cover URL saved on every collection record is a tokenised download link
+     * that already works for anyone holding it, and the alternative is a rule
+     * that fails the moment a page asks for a cover by path. `list` stays shut,
+     * so the bucket cannot be enumerated.
+     *
+     * Written by the two permissions that own the catalogue, matching the
+     * callables that create and edit the record the cover belongs to.
+     */
+    match /collections/{file} {
+      allow get: if true;
+      allow list: if false;
+
+      allow create, update: if (staffCan('CatalogingAdd')
+          || staffCan('CatalogingEdit'))
+        && isImage(5 * 1024 * 1024);
+
+      allow delete: if false;
+    }
+
+    /*
+     * Announcement attachments and news covers.
+     *
+     * Patrons download these straight from the bucket, so reads are public for
+     * the same reason covers are. Writes and deletes belong to the permission
+     * that owns the Library Desk -- `discardUpload` removes a file the author
+     * changed their mind about before the record was saved, which is why delete
+     * is granted rather than refused as it is elsewhere.
+     *
+     * `{path=**}` because the layout is nested: an announcement's own files sit
+     * under its id, and a reply's sit under a token beneath that.
+     */
+    match /updates/{kind}/{path=**} {
+      allow get: if true;
+      allow list: if false;
+
+      allow create, update: if kind in ['announcements', 'news']
+        && staffCan('AnnouncementCreation')
+        && isAllowedDocument();
+
+      allow delete: if kind in ['announcements', 'news']
+        && staffCan('AnnouncementCreation');
+    }
+
+    /*
+     * Profile pictures.
+     *
+     * Server-written only: `uploadAvatar` takes the image through a callable so
+     * the record and the file cannot disagree. Public to read because they
+     * already are -- a librarian's picture is copied onto the chat envelope and
+     * shown to guests who have no account at all.
+     */
+    match /avatar/{file} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if false;
+    }
+
+    // ------------------------------------------------------------ everything
+
+    /*
+     * Everything else, stated rather than left to the default.
+     *
+     * A request is denied unless something allows it, so this match changes no
+     * behaviour -- allows are OR'd, and a deny here cannot override one above.
+     * It is here to be read: a new prefix has to be added deliberately, above
+     * this line, rather than inheriting access by accident.
+     */
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

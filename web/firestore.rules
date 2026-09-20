@@ -1,0 +1,233 @@
+rules_version = '2';
+
+/*
+ * Firestore access for ePasigLib.
+ *
+ * The shape of this file follows from one fact about the product: almost
+ * nothing in the frontend talks to Firestore. Patrons, staff, collections,
+ * circulation, updates, reports, notifications, book requests and visits are
+ * all reached through callable functions, which run on the Admin SDK and are
+ * not subject to these rules at all. Five files in the whole client hold a
+ * Firestore reference, and everything they touch is enumerated below.
+ *
+ * So this is a deny-by-default ruleset with a short allow list, rather than an
+ * attempt to describe the database. Anything not named here is closed to every
+ * client, and closing it costs the product nothing, because the server was
+ * already doing that work.
+ *
+ * There are no custom claims on this project -- setCustomUserClaims is never
+ * called -- so a role check has to read staffs/{uid}. That is a billed read
+ * per evaluation. It is the correct trade for now; minting a claim at login
+ * would be the cheaper answer, and it is a change to the functions, not here.
+ */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------- identity
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    /*
+     * Guests chat under an anonymous account, so signedIn() is deliberately
+     * not "is a real person". It means "has a uid a rule can pin something
+     * to", which is the whole reason anonymous sign-in was introduced: a chat
+     * id remembered in localStorage is not something a rule can check, and a
+     * uid is.
+     */
+
+    // ---------------------------------------------------------------- staff
+
+    function staffPath() {
+      return /databases/$(database)/documents/staffs/$(uid());
+    }
+
+    /*
+     * staffs is keyed by Auth UID, and an archived account keeps its document
+     * -- the callables check Status == "Archived" rather than existence, and
+     * so does this. Somebody who has been let go must lose access without
+     * their record being deleted.
+     */
+    function isActiveStaff() {
+      return signedIn()
+        && exists(staffPath())
+        && get(staffPath()).data.get('Status', '') != 'Archived';
+    }
+
+    /*
+     * Permissions are top-level booleans on the staff document, not a nested
+     * map -- LiveChat: true, Checkout: true, and so on. Read with a defaulted
+     * get so a document written before a permission existed is treated as not
+     * holding it rather than failing the evaluation.
+     */
+    function staffCan(permission) {
+      return isActiveStaff()
+        && get(staffPath()).data.get(permission, false) == true;
+    }
+
+    // ---------------------------------------------------------------- chats
+
+    function chatData(chatId) {
+      return get(/databases/$(database)/documents/chats/$(chatId)).data;
+    }
+
+    /*
+     * Participants is the array the server maintains: chatStart seeds it with
+     * whoever opened the conversation, chatTake arrayUnions the librarian who
+     * picks it up. It is the only thing that makes a transcript belong to
+     * somebody, and no client can write it.
+     */
+    function isParticipantOf(chat) {
+      return signedIn() && uid() in chat.get('Participants', []);
+    }
+
+    // ------------------------------------------------------------- calendar
+
+    /*
+     * The one public document in the database.
+     *
+     * metadata/library_calendar carries the closures a librarian declares --
+     * "Close Library Today" and the like -- and the OPAC About page and chat
+     * widget show open/closed to visitors who have not signed in and never
+     * will. A get on this single document is world-readable; a list over
+     * metadata is not, because the same collection holds the UID counters, the
+     * login-attempt ledger and the search index.
+     */
+    match /metadata/library_calendar {
+      allow get: if true;
+      allow write: if false;
+    }
+
+    // ----------------------------------------------------- the chat envelope
+
+    /*
+     * Read by the person in the conversation and by the desk; written by
+     * nobody.
+     *
+     * Every field that matters here is derived -- Status, TakenBy,
+     * UnreadStaff, MessageCount, LastMessageAt -- and each is maintained
+     * either by a callable or by the onChatMessageCreated trigger. A client
+     * that could write this document could zero its own unread badge, close a
+     * conversation it does not hold, or hand itself somebody else's chat. So
+     * client writes are refused outright, and the client's entire power over a
+     * conversation is to append one message to it.
+     *
+     * get and list are split because they answer different questions. A patron
+     * opens their own chat by id, which is a get and is authorised by
+     * Participants. The desk queue badge subscribes to the whole collection
+     * filtered on status, which is a list -- and a rule is not a filter, so
+     * that query is allowed as a whole or not at all. Only a librarian holding
+     * LiveChat may run it.
+     */
+    match /chats/{chatId} {
+      allow get: if isParticipantOf(resource.data) || staffCan('LiveChat');
+      allow list: if staffCan('LiveChat');
+      allow create, update, delete: if false;
+    }
+
+    // ---------------------------------------------------------- transcripts
+
+    /*
+     * Reading is wider than writing here, on purpose.
+     *
+     * A librarian opens a waiting conversation to see what was asked before
+     * deciding to take it, and the desk page subscribes to the transcript as
+     * soon as it mounts -- so LiveChat is enough to read any transcript.
+     * Replying is not: the composer is gated on the chat being theirs, and
+     * taking a chat is what puts them in Participants. Requiring participation
+     * to write therefore matches the UI exactly while making "take it first" a
+     * rule rather than a convention.
+     *
+     * The field checks are the substance of this block. SenderUID pinned to
+     * the caller means nobody can post as a librarian; CreatedOn pinned to the
+     * server clock means nobody can backdate themselves to the top of a
+     * transcript; hasOnly means nobody can smuggle in a field the trigger owns
+     * -- Folded: true in particular, which is the idempotency marker that
+     * stops a redelivered event double-counting the unread badge.
+     *
+     * A message is never edited or deleted. A transcript that can be rewritten
+     * after the fact is not a record of anything.
+     */
+    match /chats/{chatId}/messages/{messageId} {
+      allow get, list: if isParticipantOf(chatData(chatId))
+        || staffCan('LiveChat');
+
+      allow create: if isParticipantOf(chatData(chatId))
+        && chatData(chatId).get('Status', '') != 'closed'
+        && request.resource.data.keys().hasOnly(
+             ['SenderUID', 'SenderName', 'SenderRole', 'Text', 'CreatedOn'])
+        && request.resource.data.keys().hasAll(
+             ['SenderUID', 'SenderName', 'SenderRole', 'Text', 'CreatedOn'])
+        && request.resource.data.SenderUID == uid()
+        && request.resource.data.CreatedOn == request.time
+        && request.resource.data.SenderRole in ['patron', 'staff']
+        && (request.resource.data.SenderRole != 'staff' || staffCan('LiveChat'))
+        && request.resource.data.Text is string
+        && request.resource.data.Text.size() > 0
+        && request.resource.data.Text.size() <= 5000
+        && request.resource.data.SenderName is string
+        && request.resource.data.SenderName.size() <= 120;
+
+      allow update, delete: if false;
+    }
+
+    // ------------------------------------------------------------- presence
+
+    /*
+     * One typing flag per person, at their own uid.
+     *
+     * The document id being the writer uid is what makes this safe to leave
+     * open to clients at all: there is no field to forge, because the only
+     * thing a presence document says is "the person at this id is typing", and
+     * the path already names them. at is the server clock, so a stale flag
+     * cannot be kept alive by a client lying about when it was refreshed --
+     * the reader expires anything older than its TTL.
+     *
+     * Delete is checked on the path alone. Withdrawing a typing flag is fired
+     * on unmount and on send, sometimes after a conversation has closed, and a
+     * retraction that fails is worse than one that is over-permitted: the
+     * worst a caller can do is stop advertising their own keystrokes.
+     */
+    match /chats/{chatId}/presence/{personId} {
+      allow get, list: if isParticipantOf(chatData(chatId))
+        || staffCan('LiveChat');
+
+      allow create, update: if personId == uid()
+        && isParticipantOf(chatData(chatId))
+        && request.resource.data.keys().hasOnly(['typing', 'role', 'name', 'at'])
+        && request.resource.data.typing == true
+        && request.resource.data.at == request.time
+        && request.resource.data.role in ['patron', 'staff']
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 120;
+
+      allow delete: if personId == uid();
+    }
+
+    // ----------------------------------------------------------- everything
+
+    /*
+     * Everything else, stated rather than left to the default.
+     *
+     * patrons, staffs, collections, accessions, updates, notifications,
+     * lmslogs, bookRequests, reservationRequests, visits, searches, entries,
+     * constants, password_resets, email_verifications and the rest of metadata
+     * are reachable only through callables today, so no client loses anything
+     * by this.
+     *
+     * A request is denied unless something allows it, so this match changes no
+     * behaviour -- allows are OR'd, and a deny here cannot override one above.
+     * It is here to be read: a future path that needs client access has to be
+     * added deliberately, above this line, rather than inherited by accident.
+     */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+# Pasig Knowledge Center — https://epasiglibrary.com
+# Public catalogue is crawlable; staff tooling and patron areas are not.
+
+User-agent: *
+Allow: /opac/home
+Allow: /opac/about
+Allow: /opac/news_announcements
+Allow: /opac/collections
+
+# Staff-only tooling — never index.
+Disallow: /lms/
+Disallow: /login
+Disallow: /register
+Disallow: /verify_email
+Disallow: /password_reset
+Disallow: /unauthorized
+Disallow: /opac/unauthorized
+Disallow: /lms/unauthorized
+
+# Patron-private areas.
+Disallow: /opac/profile
+
+# Superseded by /opac/collections (kept as 301s).
+Disallow: /opac/books
+
+Sitemap: https://epasiglibrary.com/sitemap.xml
