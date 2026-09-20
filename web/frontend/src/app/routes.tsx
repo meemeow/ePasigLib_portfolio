@@ -579,4 +579,9 @@ export const routes = createBrowserRouter([
       },
     ],
   },
-]);
+], {
+  // "/" normally, "/ePasigLib_portfolio/" on the GitHub Pages project site.
+  // Vite fills BASE_URL from the `base` it was built with; React Router wants
+  // it without the trailing slash.
+  basename: import.meta.env.BASE_URL.replace(/\/$/, "") || "/",
+});
