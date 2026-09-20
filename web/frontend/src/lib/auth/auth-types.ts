@@ -1,9 +1,10 @@
 import type { LoginData } from "@/features/auth/login/types/login-types";
 import type { User } from "firebase/auth";
+import { asset } from "@/lib/asset";
 
 export type AuthUserType = "Staff" | "Patron";
 
-export const DEFAULT_AVATAR = "/assets/images/default_avatar.jpg";
+export const DEFAULT_AVATAR = asset("/assets/images/default_avatar.jpg");
 
 export interface StaffRoles {
   CatalogingAdd: boolean;

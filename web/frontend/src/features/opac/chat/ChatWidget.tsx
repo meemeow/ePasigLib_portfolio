@@ -21,6 +21,7 @@ import { useChatLauncher } from "@/features/opac/chat/api/chat-launcher";
 import { useNotificationSummary } from "@/hooks/use-notification-summary";
 import FaqChat from "@/features/opac/chat/components/FaqChat";
 import ChatRatingCard from "@/features/opac/chat/components/ChatRatingCard";
+import { asset } from "@/lib/asset";
 
 const NAVY = "#002248";
 const BLUE = "#128CF1";
@@ -187,8 +188,8 @@ export default function ChatWidget() {
           <img
             src={
               chat.open
-                ? "/assets/images/mutya2.png"
-                : "/assets/images/mutya.png"
+                ? asset("/assets/images/mutya2.png")
+                : asset("/assets/images/mutya.png")
             }
             alt=""
             aria-hidden
@@ -233,8 +234,8 @@ export default function ChatWidget() {
               <img
                 src={
                   chat.open
-                    ? "/assets/images/mutya2.png"
-                    : "/assets/images/mutya.png"
+                    ? asset("/assets/images/mutya2.png")
+                    : asset("/assets/images/mutya.png")
                 }
                 alt=""
                 draggable={false}

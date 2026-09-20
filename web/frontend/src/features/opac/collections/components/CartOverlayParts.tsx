@@ -8,6 +8,7 @@ import { Text } from "@/components/ui/Text";
 import { cn } from "@/lib/utils";
 import type { CartStatus } from "@/features/opac/collections/types/collections-types";
 import { type HistoryRow } from "./cart-utils";
+import { asset } from "@/lib/asset";
 
 export const CARD = "rounded-xl border border-gray-200 bg-white p-4 shadow-sm";
 
@@ -315,7 +316,7 @@ export function ListSkeleton({ withCover }: { withCover?: boolean }) {
   );
 }
 
-const NO_COVER = "/assets/images/PasigLibrary_Logo.png";
+const NO_COVER = asset("/assets/images/PasigLibrary_Logo.png");
 
 export function Cover({
   src,

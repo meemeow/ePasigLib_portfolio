@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { Text } from "@/components/ui/Text";
 import { callCirculation as callable } from "@/lib/api/callables";
+import { asset } from "@/lib/asset";
 
 type AnyRecord = Record<string, unknown>;
 
@@ -346,21 +347,21 @@ export default function Navbar() {
           <picture>
             <source
               media="(min-width: 1536px)"
-              srcSet="/assets/images/PKC_with_text2.png"
+              srcSet={asset("/assets/images/PKC_with_text2.png")}
             />
             <source
               media="(max-width: 639px)"
-              srcSet="/assets/images/PKC_logo2.png"
+              srcSet={asset("/assets/images/PKC_logo2.png")}
             />
             <source
               media="(max-width: 1449px)"
-              srcSet="/assets/images/PKC_with_text2.png"
+              srcSet={asset("/assets/images/PKC_with_text2.png")}
             />
             <img
               src={
                 isStaff
-                  ? "/assets/images/PKC_logo2.png"
-                  : "/assets/images/PKC_with_text2.png"
+                  ? asset("/assets/images/PKC_logo2.png")
+                  : asset("/assets/images/PKC_with_text2.png")
               }
               alt="Pasig Knowledge Center"
               className={`block h-11 w-auto 2xl:h-12 ${

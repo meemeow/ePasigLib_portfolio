@@ -1,4 +1,5 @@
 import { Text } from "@/components/ui/Text";
+import { asset } from "@/lib/asset";
 
 const SIDE_FADE =
   "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%)";
@@ -36,7 +37,7 @@ export default function GreetingBanner({
       </div>
 
       <img
-        src="/assets/images/city_hall_vector.png"
+        src={asset("/assets/images/city_hall_vector.png")}
         alt=""
         aria-hidden
         draggable={false}

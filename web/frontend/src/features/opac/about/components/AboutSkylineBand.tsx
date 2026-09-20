@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 export function AboutSkylineBand() {
   return (
     <div
@@ -7,7 +9,7 @@ export function AboutSkylineBand() {
       {COPIES.map(({ key, className }) => (
         <img
           key={key}
-          src="/assets/images/opac_about_vector3.png"
+          src={asset("/assets/images/opac_about_vector3.png")}
           alt=""
           draggable={false}
           className={`shrink-0 object-contain object-bottom ${className}`}

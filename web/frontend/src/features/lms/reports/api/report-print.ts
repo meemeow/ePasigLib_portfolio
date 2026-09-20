@@ -4,6 +4,7 @@ import type {
   ReportSummary,
   ReportTally,
 } from "@/features/lms/reports/types/report-types";
+import { asset } from "@/lib/asset";
 
 interface PrintRow {
   label: string;
@@ -350,14 +351,14 @@ export function buildReportHtml(
   <body>
     <header>
       <div class="masthead">
-        <!-- Root-relative, and the print document is written into a same-origin
+        <!-- Base-resolved, and the print document is written into a same-origin
              iframe, so it resolves against the app the same way the navbar's
              copy does. Width and height are stated rather than left to the
              file: the frame prints on its own load event, and an image with no
              box reserved can otherwise be measured at zero and reflow the
              masthead after the sheet has been laid out. Empty alt because the
              name is set beside it in text. -->
-        <img src="/assets/images/PKC_logo2.png" alt="" width="97" height="34" />
+        <img src="${asset("/assets/images/PKC_logo2.png")}" alt="" width="97" height="34" />
         <h1>Pasig Knowledge Center</h1>
       </div>
       <p class="period">${escape(summary.period.label)}</p>

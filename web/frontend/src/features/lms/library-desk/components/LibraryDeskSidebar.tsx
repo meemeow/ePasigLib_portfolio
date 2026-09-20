@@ -32,6 +32,7 @@ import {
 } from "@/features/lms/library-desk/api/desk-sections";
 import { useAuth } from "@/lib/auth/use-auth";
 import { useChatBadge } from "@/features/lms/library-desk/api/use-chat-badge";
+import { asset } from "@/lib/asset";
 
 interface NavItem {
   slug: string;
@@ -274,7 +275,7 @@ export default function LibraryDeskSidebar({
       }`}
     >
       <img
-        src="/assets/images/quick_access_vector.png"
+        src={asset("/assets/images/quick_access_vector.png")}
         alt=""
         aria-hidden
         draggable={false}

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { Search, X, Loader2, ChevronRight } from "lucide-react";
 import type { BookResult } from "@/features/opac/home/types/opac-home-types";
+import { asset } from "@/lib/asset";
 
 interface HomeSearchDropdownProps {
   value: string;
@@ -166,13 +167,13 @@ export function HomeSearchDropdown({
                       <img
                         src={
                           book.CollectionImage ||
-                          "/assets/images/PasigLibrary_Logo.png"
+                          asset("/assets/images/PasigLibrary_Logo.png")
                         }
                         alt={`${book.CollectionTitle} Cover`}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.currentTarget.src =
-                            "/assets/images/PasigLibrary_Logo.png";
+                            asset("/assets/images/PasigLibrary_Logo.png");
                         }}
                       />
                     </div>

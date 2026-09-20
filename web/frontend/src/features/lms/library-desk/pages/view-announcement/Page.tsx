@@ -22,6 +22,7 @@ import ReplyFormModal from "@/features/lms/library-desk/components/ReplyFormModa
 import ReplyThread from "@/features/lms/library-desk/pages/view-announcement/components/ReplyThread";
 import { useAnnouncementView } from "@/features/lms/library-desk/pages/view-announcement/api/announcement-view-logic";
 import { useDeskRail } from "@/features/lms/library-desk/api/desk-rail-context";
+import { asset } from "@/lib/asset";
 
 export default function ViewAnnouncement() {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ export default function ViewAnnouncement() {
           status={record.Status}
           title={record.Subject}
           kindLabel="Announcement"
-          artwork="/assets/images/megaphone.png"
+          artwork={asset("/assets/images/megaphone.png")}
           onBack={back}
           facts={[
             {

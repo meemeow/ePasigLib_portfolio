@@ -15,6 +15,7 @@ import {
   writeFaqLog,
   type FaqTurn,
 } from "@/features/opac/chat/api/faq-session";
+import { asset } from "@/lib/asset";
 
 export default function FaqChat() {
   const [log, setLog] = useState<FaqTurn[]>(readFaqLog);
@@ -175,7 +176,7 @@ function MutyaAvatar() {
   return (
     <span className="relative block size-11 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-[#128CF1] via-[#0F76CC] to-[#003067] shadow-sm ring-2 ring-[#128CF1]/45 ring-offset-1 ring-offset-white">
       <img
-        src="/assets/images/mutya.png"
+        src={asset("/assets/images/mutya.png")}
         alt=""
         aria-hidden
         draggable={false}

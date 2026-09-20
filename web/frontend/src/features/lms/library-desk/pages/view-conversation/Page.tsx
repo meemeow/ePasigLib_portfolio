@@ -26,6 +26,7 @@ import { formatMillis } from "@/features/lms/library-desk/api/desk-helpers";
 import { useDeskRail } from "@/features/lms/library-desk/api/desk-rail-context";
 import { usePublishBreadcrumbLabel } from "@/hooks/breadcrumb-label";
 import { useConversationView } from "@/features/lms/library-desk/pages/view-conversation/api/conversation-view-logic";
+import { asset } from "@/lib/asset";
 
 export default function ViewConversation() {
   const navigate = useNavigate();
@@ -168,7 +169,7 @@ export default function ViewConversation() {
           badge={badge}
           title={chat.StartedByName || "Unknown"}
           kindLabel={chat.IsGuest ? "Guest conversation" : "Patron conversation"}
-          artwork="/assets/images/chats.png"
+          artwork={asset("/assets/images/chats.png")}
           artworkWidth="w-56"
           artworkTop="-top-11"
           onBack={back}

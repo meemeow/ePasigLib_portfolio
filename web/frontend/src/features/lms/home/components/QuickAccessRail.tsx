@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/Tooltip";
 import type { StaffRoles } from "@/lib/auth/auth-types";
 import type { QuickAccessItem } from "@/features/lms/home/types/home-types";
+import { asset } from "@/lib/asset";
 
 interface QuickAccessRailProps {
   items: QuickAccessItem[];
@@ -201,7 +202,7 @@ export default function QuickAccessRail({
       }`}
     >
       <img
-        src="/assets/images/quick_access_vector.png"
+        src={asset("/assets/images/quick_access_vector.png")}
         alt=""
         aria-hidden
         draggable={false}

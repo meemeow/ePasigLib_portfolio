@@ -28,6 +28,7 @@ import {
   REPORT_GROUPS,
   REPORT_SECTIONS,
 } from "@/features/lms/reports/api/report-sections";
+import { asset } from "@/lib/asset";
 
 const ICONS: Record<string, ReactNode> = {
   overview: <LayoutDashboard className="size-4" />,
@@ -218,7 +219,7 @@ export default function ReportsSidebar({
       }`}
     >
       <img
-        src="/assets/images/quick_access_vector.png"
+        src={asset("/assets/images/quick_access_vector.png")}
         alt=""
         aria-hidden
         draggable={false}

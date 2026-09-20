@@ -22,6 +22,7 @@ import NewsFormModal from "@/features/lms/library-desk/components/NewsFormModal"
 import { useDeskRail } from "@/features/lms/library-desk/api/desk-rail-context";
 import { formatMillisDate } from "@/features/lms/library-desk/api/desk-helpers";
 import { useNewsView } from "@/features/lms/library-desk/pages/view-news/api/news-view-logic";
+import { asset } from "@/lib/asset";
 
 export default function ViewNews() {
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ export default function ViewNews() {
           status={record.Status}
           title={record.Title}
           kindLabel="News"
-          artwork="/assets/images/newspaper.png"
+          artwork={asset("/assets/images/newspaper.png")}
           artworkWidth="w-56"
           artworkTop="-top-8"
           onBack={back}

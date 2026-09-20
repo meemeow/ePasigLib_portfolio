@@ -1,4 +1,5 @@
 import { Text } from "@/components/ui/Text";
+import { asset } from "@/lib/asset";
 
 export function AboutIntro() {
   return (
@@ -25,7 +26,7 @@ export function AboutIntro() {
       </div>
 
       <img
-        src="/assets/images/opac_about_vector3.png"
+        src={asset("/assets/images/opac_about_vector3.png")}
         alt=""
         aria-hidden
         draggable={false}

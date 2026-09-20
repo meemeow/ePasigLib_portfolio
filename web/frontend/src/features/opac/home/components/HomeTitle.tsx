@@ -1,10 +1,11 @@
 import { Text } from "@/components/ui/Text";
+import { asset } from "@/lib/asset";
 
 export function HomeTitle() {
   return (
     <div className="flex flex-col items-center space-y-5 lg:space-y-8">
       <img
-        src="/assets/images/Pasig_City_Seal_Logo.png"
+        src={asset("/assets/images/Pasig_City_Seal_Logo.png")}
         alt="Pasig City seal"
         className="h-14 w-14 sm:h-20 sm:w-20"
       />

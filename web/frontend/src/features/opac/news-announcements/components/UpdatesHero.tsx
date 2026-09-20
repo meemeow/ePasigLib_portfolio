@@ -1,6 +1,7 @@
 import { RefreshCw, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
+import { asset } from "@/lib/asset";
 
 interface UpdatesHeroProps {
   announcementCount: number;
@@ -27,19 +28,19 @@ export function UpdatesHero({
         className="pointer-events-none absolute inset-x-0 bottom-0 flex select-none opacity-20"
       >
         <img
-          src="/assets/images/opac_about_vector3.png"
+          src={asset("/assets/images/opac_about_vector3.png")}
           alt=""
           draggable={false}
           className="w-full shrink-0 object-contain object-bottom sm:w-1/2 lg:w-1/3"
         />
         <img
-          src="/assets/images/opac_about_vector3.png"
+          src={asset("/assets/images/opac_about_vector3.png")}
           alt=""
           draggable={false}
           className="hidden w-1/2 shrink-0 object-contain object-bottom sm:block lg:w-1/3"
         />
         <img
-          src="/assets/images/opac_about_vector3.png"
+          src={asset("/assets/images/opac_about_vector3.png")}
           alt=""
           draggable={false}
           className="hidden w-1/3 shrink-0 object-contain object-bottom lg:block"

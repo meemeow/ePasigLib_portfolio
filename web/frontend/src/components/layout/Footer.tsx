@@ -1,6 +1,7 @@
 import { Text } from "@/components/ui/Text";
 import { NavLink } from "react-router-dom";
 import { useAppSection } from "@/hooks/use-app-section";
+import { asset } from "@/lib/asset";
 
 export default function Footer() {
   const { isLMS, base } = useAppSection();
@@ -24,7 +25,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-8 items-start">
           <div className="flex flex-col items-center md:flex-row md:items-center text-center md:text-left gap-3 md:col-span-2 self-center">
             <img
-              src="/assets/images/PKC_logo2.png"
+              src={asset("/assets/images/PKC_logo2.png")}
               alt="Pasig Knowledge Center"
               className="w-[110px] h-auto"
             />

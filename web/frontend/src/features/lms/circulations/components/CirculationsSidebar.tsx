@@ -34,6 +34,7 @@ import {
   TRANSACTION_PAGES,
 } from "@/features/lms/circulations/api/circulation-sections";
 import { useCirculationBadges } from "@/features/lms/circulations/api/circulation-badges-logic";
+import { asset } from "@/lib/asset";
 
 interface NavItem {
   slug: string;
@@ -277,7 +278,7 @@ export default function CirculationsSidebar() {
       }`}
     >
       <img
-        src="/assets/images/quick_access_vector.png"
+        src={asset("/assets/images/quick_access_vector.png")}
         alt=""
         aria-hidden
         draggable={false}

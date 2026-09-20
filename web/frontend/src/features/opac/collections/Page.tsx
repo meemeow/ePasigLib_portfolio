@@ -29,6 +29,7 @@ import { useCart } from "@/features/opac/collections/components/use-cart";
 import type { CollectionSummary } from "@/features/opac/collections/types/collections-types";
 import { Seo } from "@/lib/seo/Seo";
 import { breadcrumbNode, graph, websiteNode } from "@/lib/seo/structured-data";
+import { asset } from "@/lib/asset";
 
 export default function OPACCollections() {
 	const browser = useCollectionsBrowser();
@@ -229,7 +230,7 @@ export default function OPACCollections() {
 						)}
 					>
 						<img
-							src="/assets/images/quick_access_vector.png"
+							src={asset("/assets/images/quick_access_vector.png")}
 							alt=""
 							aria-hidden
 							draggable={false}
